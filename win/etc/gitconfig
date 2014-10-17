@@ -1,0 +1,6 @@
+[http]
+	proxy = http://95.172.74.3:80
+[https]
+	proxy = https://95.172.74.3:80
+[url "https://"]
+	insteadOf = git://
