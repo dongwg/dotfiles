@@ -9,4 +9,6 @@ copy ..\etc\_vimrc %userprofile%
 rem Copy bashrc
 copy ..\etc\bashrc %userprofile%\.bashrc
 
+rem Import the Putty settings
+reg import ..\etc\putty_settings.reg
 
