@@ -2,6 +2,7 @@
 
 
 hg pull
+hg update
 
 make clean
 
