@@ -20,8 +20,10 @@ call vundle#begin('~/vimfiles/bundle')
 Plugin 'gmarik/Vundle.vim'
 
 " Ultisnips
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
+if (has('python') || has('python3'))
+  Plugin 'SirVer/ultisnips'
+  Plugin 'honza/vim-snippets'
+endif
 
 " Solarized color 
 Plugin 'altercation/vim-colors-solarized'
@@ -100,7 +102,10 @@ set shiftwidth=4
 
 " gnu open source style editing
 "set cinoptions=>2,n-2,{0,^-2,:2,=2,g0,h2,p5,t0,+2,(0,u0,w1,m1 shiftwidth=2 tabstop=8
-set cinoptions=>2,n0,:2,=2,g0,h2,p2,t0,(0,u0,w1,m1 shiftwidth=2 tabstop=8
+"set cinoptions=>2,n0,:2,=2,g0,h2,p2,t0,(0,u0,w1,m1 shiftwidth=2 tabstop=8
+au Filetype * set cinoptions=>2,n0,:2,=2,g0,h2,p2,t0,(0,u0,w1,m1| set sw=2| set ts=8
+au Filetype python set tabstop=4| set shiftwidth=4
+au BufEnter *.py set sw=4 ts=4
 
 "set softtabstop=4
 set expandtab
@@ -127,6 +132,10 @@ filetype plugin indent on
 " backspacing over indention, end-of-line and start-of-line
 inoremap  
 set backspace=indent,eol,start
+
+" Settings for Python Snippets
+let g:ultisnips_python_style="doxygen"
+let g:ultisnips_python_quoting_style="single"
 
 " select case-insenitiv search (not default)
 " set ignorecase
