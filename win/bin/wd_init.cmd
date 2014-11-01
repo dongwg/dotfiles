@@ -7,9 +7,13 @@ if not exist %userprofile%\vimfiles\bundle\Vundle.vim (
   )
 
 rem Copy vimrc
-copy ..\etc\_vimrc %userprofile%
+echo copy "%~dp1etc\_vimrc" "%userprofile%"
+copy "%~dp1etc\_vimrc" "%userprofile%"
+
 
 rem Copy bashrc
-copy ..\etc\bashrc %userprofile%\.bashrc
+echo copy "%~dp1etc\bashrc" "%userprofile%\.bashrc"
+copy "%~dp1etc\bashrc" "%userprofile%\.bashrc"
 
-
+:END
+rem The end of the file
