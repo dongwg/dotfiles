@@ -23,6 +23,8 @@ Plugin 'gmarik/Vundle.vim'
 if (has('python') || has('python3'))
   Plugin 'SirVer/ultisnips'
   Plugin 'honza/vim-snippets'
+
+  Plugin 'bling/vim-airline'
 endif
 
 " Solarized color 
@@ -34,6 +36,10 @@ Plugin 'cudajinja.vim'
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 
+" The consola font for powerline on Windows
+if has('gui_win32')
+    Plugin 'nicolalamacchia/powerline-consolas'
+endif
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
@@ -72,6 +78,17 @@ filetype plugin indent on    " required
 " Geometry or windows size
 set lines=50 columns=100
 
+"set encoding=utf-8
+if has('gui_win32')
+    set guifont=Consolas:h11:cANSI,Inconsolata:h12,Courier\ New:h11
+endif
+
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_theme             = 'powerlineish'
+if has ('win32unix') && !has('gui_running')
+    let g:airline_powerline_fonts = 1
+endif
+
 " CUDA, NB (2014-10-17): No longer needed by cudajinja
 "au BufNewFile,BufRead *.cu set ft=cu
 "au BufNewFile,BufRead *.cuh set ft=cu
@@ -82,6 +99,7 @@ syntax on
 " colorscheme evening
 if has('gui_running')
     set background=light
+    set t_Co=256
 else
     set background=dark
 endif
@@ -90,6 +108,7 @@ endif
 " colorscheme marklar
 " set t_Co=16
 colorscheme solarized
+
 
 " ================ Turn Off Swap Files ==============
 set noswapfile
