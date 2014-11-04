@@ -1,5 +1,11 @@
 @echo off
 
+setlocal
+
+rem Find the root directory of WIN dotfiles which 
+rem is the parent directory of the batch file
+for %%i in ("%~dp0..") do set "wroot=%%~fi"
+
 if "%~1" == "" goto USAGE
 
 if "%1" == "vimrc" goto VIMRC
@@ -17,32 +23,32 @@ goto END
 
 :VIMRC
 rem Copy vimrc
-echo copy "%userprofile%\_vimrc" "%~dp1etc\_vimrc"
-copy "%userprofile%\_vimrc" "%~dp1etc\_vimrc"
+echo copy "%userprofile%\_vimrc" "%wroot%\etc\_vimrc"
+copy "%userprofile%\_vimrc" "%wroot%\etc\_vimrc"
 goto END
 
 :BASHRC
 rem Copy bashrc
-echo copy "%userprofile%\.bashrc" "%~dp1etc\bashrc"
-copy "%userprofile%\.bashrc" "%~dp1etc\bashrc"
+echo copy "%userprofile%\.bashrc" "%wroot%\etc\bashrc"
+copy "%userprofile%\.bashrc" "%wroot%\etc\bashrc"
 goto :END
 
 :PUTTY
 rem PuTTY settings
-echo reg export HKCU\Software\SimonTatham "%~dp1etc\putty_settings.reg"
-reg export HKCU\Software\SimonTatham "%~dp1etc\putty_settings.reg"
+echo reg export HKCU\Software\SimonTatham "%wroot%\etc\putty_settings.reg"
+reg export HKCU\Software\SimonTatham "%wroot%\etc\putty_settings.reg"
 goto END
 
 :ALL
 rem Copy vimrc
-echo copy "%userprofile%\_vimrc" "%~dp1etc\_vimrc"
-copy "%userprofile%\_vimrc" "%~dp1etc\_vimrc"
+echo copy "%userprofile%\_vimrc" "%wroot%\etc\_vimrc"
+copy "%userprofile%\_vimrc" "%wroot%\etc\_vimrc"
 rem Copy bashrc
-echo copy "%userprofile%\.bashrc" "%~dp1etc\bashrc"
-copy "%userprofile%\.bashrc" "%~dp1etc\bashrc"
+echo copy "%userprofile%\.bashrc" "%wroot%\etc\bashrc"
+copy "%userprofile%\.bashrc" "%wroot%\etc\bashrc"
 rem PuTTY settings
-echo reg export HKCU\Software\SimonTatham "%~dp1etc\putty_settings.reg"
-reg export HKCU\Software\SimonTatham "%~dp1etc\putty_settings.reg"
+echo reg export HKCU\Software\SimonTatham "%wroot%\etc\putty_settings.reg"
+reg export HKCU\Software\SimonTatham "%wroot%\etc\putty_settings.reg"
 goto END
 
 :USAGE

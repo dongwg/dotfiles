@@ -88,6 +88,7 @@ let g:airline_theme             = 'powerlineish'
 if has ('win32unix') && !has('gui_running')
     let g:airline_powerline_fonts = 1
 endif
+set laststatus=2
 
 " CUDA, NB (2014-10-17): No longer needed by cudajinja
 "au BufNewFile,BufRead *.cu set ft=cu
