@@ -43,6 +43,8 @@ Plugin 'cudajinja.vim'
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 
+" Indentline
+Plugin 'Yggdroot/indentLine'
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
@@ -82,8 +84,6 @@ filetype plugin indent on    " required
 "au BufNewFile,BufRead *.cu set ft=cu
 "au BufNewFile,BufRead *.cuh set ft=cu
 
-" enable syntax highlighting
-syntax on
 
 " colorscheme evening
 set background=dark
@@ -114,6 +114,7 @@ set shiftwidth=4
 
 au Filetype * set cinoptions=>2,n0,:2,=2,g0,h2,p2,t0,(0,u0,w1,m1| set sw=2| set ts=8
 au Filetype python set tabstop=4| set shiftwidth=4
+au Filetype fortran set tabstop=3| set shiftwidth=3
 au BufEnter *.py set sw=4 ts=4
 
 "set softtabstop=4
@@ -124,7 +125,23 @@ au BufNewFile,BufRead [mM]akefile setlocal noexpandtab
 " automatically indent lines (default)
 set noautoindent
 set smartindent
-let b:fortran_do_enddo=1
+
+" Fortran related settings
+let s:extfname = expand("%:e")
+if s:extfname ==? "f90"
+  let fortran_free_source=1
+  unlet! fortran_fixed_source
+endif
+if s:extfname ==? "f"
+  let fortran_fixed_source=1
+  unlet! fortran_free_source
+endif
+let fortran_do_enddo=1
+let fortran_more_precise=1
+let fortran_fold=1
+
+" enable syntax highlighting
+syntax on
 
 " maximize window when using split structure
 map <C-J> <C-W>j<C-W>_
@@ -135,8 +152,6 @@ set wmh=0
 " 'set paste' will turn off auto-indention
 set pastetoggle=<F11>
 
-" Enable file type plugin and indent (useful for python editing)
-filetype plugin indent on
 
 " backspacing over indention, end-of-line and start-of-line
 inoremap  
