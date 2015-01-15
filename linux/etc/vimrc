@@ -31,6 +31,7 @@ if (has('python') || has('python3')) && s:python_ver >= 260
 
   " Powerline
   " Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+  " Plugin 'Lokaltog/powerline-fonts'
 endif
 
 Plugin 'bling/vim-airline'
