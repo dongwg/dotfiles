@@ -1,0 +1,34 @@
+# Write your default config options here!
+#vo=sdl
+#vo=direct3d
+#vo=opengl
+vo=direct3d_shaders
+hwdec=dxva2-copy
+hwdec-codecs=h264
+vd-lavc-threads = 4
+#vd-lavc-o = strict=-2
+vd-lavc-fast = yes
+vd-lavc-skiploopfilter = nonref
+#vd-lavc-skipframe = nonref
+vd-lavc-framedrop=nonref
+#ad-lavc-threads = 8
+#ao=dsound
+ao=wasapi
+
+
+sub-ass = yes
+sub-auto = all
+# To load all the subs in the directory
+#autosub-match=all
+
+# mpv searchs subtitle files in /path/to/the/movie:/path/to/the/movie/subs
+sub-paths=subs
+
+msg-color=yes
+volume=0
+
+# set cache to 2MB
+#cache=2048
+cache-default = 2048
+
+

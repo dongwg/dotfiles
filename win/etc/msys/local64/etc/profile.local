@@ -1,0 +1,30 @@
+#
+# /local64/etc/profile.local
+#
+
+alias dir='ls -la --color=auto'
+alias ls='ls --color=auto'
+alias ll='ls -l'
+
+PKG_CONFIG_PATH="/local64/lib/pkgconfig:/mingw/download/mplayer2-build/build_libs/lib/pkgconfig"
+CPPFLAGS="-I/local64/include"
+CFLAGS="-I/local64/include -mms-bitfields -mthreads"
+CXXFLAGS="-I/local64/include -mms-bitfields -mthreads"
+LDFLAGS="-L/local64/lib"
+export PKG_CONFIG_PATH CPPFLAGS CFLAGS CXXFLAGS LDFLAGS
+
+PATH=".:/local64/bin:/mingw64/bin:/mingw/bin:/bin:/opt/bin:/e/tools/apache-ant-1.9.4/bin"
+#PS1='\[\033[32m\]\u@\h \[\033[33m\w\033[0m\]$ '
+export PATH #PS1
+
+# package build directory
+LOCALBUILDDIR=/build64
+# package installation prefix
+LOCALDESTDIR=/local64
+export LOCALBUILDDIR LOCALDESTDIR
+
+export ANT_HOME=/e/tools/apache-ant-1.9.4
+export JAVA_HOME=/c/Program\ Files/Java/jdk1.8.0_40
+
+
+
