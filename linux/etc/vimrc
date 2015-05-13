@@ -31,7 +31,6 @@ if (has('python') || has('python3')) && s:python_ver >= 260
 
   " Powerline
   " Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
-  " Plugin 'Lokaltog/powerline-fonts'
 endif
 
 Plugin 'bling/vim-airline'
@@ -48,6 +47,18 @@ Plugin 'plasticboy/vim-markdown'
 
 " Indentline
 Plugin 'Yggdroot/indentLine'
+
+" taglist 
+Plugin 'taglist.vim'
+
+" autotag
+Plugin 'craigemery/vim-autotag'
+
+" YouCompleteMe - requires vim 7.3.584+
+"Plugin 'Valloric/YouCompleteMe'
+
+" OmniCppComplete
+Plugin 'OmniCppComplete'
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
@@ -110,6 +121,51 @@ if has ('win32unix') && !has('gui_running')
 endif
 set laststatus=2
 
+" taglist related
+map <F3> :silent! Tlist<CR> 
+let Tlist_Ctags_Cmd='ctags-exuberant' 
+let Tlist_Use_Right_Window=1 
+let Tlist_Show_One_File=0 
+let Tlist_File_Fold_Auto_Close=1 
+let Tlist_Exit_OnlyWindow=1 
+let Tlist_Process_File_Always=0 
+let Tlist_Inc_Winwidth=0
+set tags+=/vega/xp/dev/wdong/tags/cpp.tags
+set tags+=/vega/xp/dev/wdong/tags/gl.tags
+set tags+=/vega/xp/dev/wdong/tags/qt4.tags
+set tags+=/vega/xp/dev/wdong/tags/vega.tags
+set tags+=/vega/xp/dev/wdong/tags/python.tags
+
+" OmniCppComplete
+let OmniCpp_NamespaceSearch = 1
+let OmniCpp_GlobalScopeSearch = 1
+let OmniCpp_ShowAccess = 1
+let OmniCpp_ShowPrototypeInAbbr = 1 " show function parameters
+let OmniCpp_MayCompleteDot = 1 " autocomplete after .
+let OmniCpp_MayCompleteArrow = 1 " autocomplete after ->
+let OmniCpp_MayCompleteScope = 1 " autocomplete after ::
+let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD", "vUtl"]
+" automatically open and close the popup menu / preview window
+au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+"set completeopt=menuone,menu,longest,preview
+set completeopt=longest,menuone
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
+  \ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+
+inoremap <expr> <M-,> pumvisible() ? '<C-n>' :
+  \ '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+" open omni completion menu closing previous if open and opening new menu without changing the text
+inoremap <expr> <C-Space> (pumvisible() ? (col('.') > 1 ? '<Esc>i<Right>' : '<Esc>i') : '') .
+            \ '<C-x><C-o><C-r>=pumvisible() ? "\<lt>C-n>\<lt>C-p>\<lt>Down>" : ""<CR>'
+" open user completion menu closing previous if open and opening new menu without changing the text
+inoremap <expr> <S-Space> (pumvisible() ? (col('.') > 1 ? '<Esc>i<Right>' : '<Esc>i') : '') .
+            \ '<C-x><C-u><C-r>=pumvisible() ? "\<lt>C-n>\<lt>C-p>\<lt>Down>" : ""<CR>'
+
+" Buffer related
+:nnoremap <C-n> :bnext<CR>
+:nnoremap <C-p> :bprevious<CR> 
+:nnoremap <F5> :buffers<CR>:buffer<Space>
 
 " ================ Turn Off Swap Files ==============
 set noswapfile
@@ -390,6 +446,12 @@ endif " has("autocmd")
 
 " Changed default required by SuSE security team
 set modelines=0
+
+" Change the menu colors for omni completion
+hi Pmenu        cterm=none ctermfg=White     ctermbg=Blue
+hi PmenuSel     cterm=none ctermfg=Black     ctermbg=DarkGreen
+hi PmenuSbar    cterm=none ctermfg=none      ctermbg=Green
+hi PmenuThumb   cterm=none ctermfg=DarkGreen ctermbg=DarkGreen
 
 " get easier to use and more user friendly vim defaults
 " /etc/vimrc ends here
