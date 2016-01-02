@@ -1,43 +1,137 @@
+upstream php {
+    server unix:/var/run/php-fpm.sock;
+    #server 127.0.0.1:9000;
+}
+
+map $uri $blogname{
+    ~^(?P<blogpath>/[^/]+/)files/(.*)   $blogpath ;
+}
+
+map $blogname $blogid{
+    default -999;
+     
+    #Ref: http://wordpress.org/extend/plugins/nginx-helper/
+    #include /var/www/wordpress/wp-content/plugins/nginx-helper/map.conf ;
+    include /usr/local/nginx/html/shajisoft_wp/wp-content/uploads/nginx-helper/map.conf;
+}
+
 server {
     listen 80 default_server;
     listen [::]:80 default_server ipv6only=on;
-    
-    root /usr/local/nginx/html/default;
-    index index.html index.htm index.php;
-    
+
+    server_name shajisoft.com www.shajisoft.com;
+    root /usr/local/nginx/html;
+
     location / {
-        # First attempt to serve request as file, then
-	# as directory, then fall back to displaying a 404.
-    	try_files $uri $uri/ index.html index.php;
-    }
-    
-    
-    location ^~ /shajisoft_wp/ {
-        root /usr/local/nginx/html;
-        
-        if (!-e $request_filename) {
-            rewrite /wp-admin$ $scheme://$host$uri/ permanent;
-            rewrite ^/shajisoft_wp(/[^/]+)?(/wp-.*) /shajisoft_wp$2 last;
-            rewrite ^/shajisoft_wp(/[^/]+)?(/.*\.php) /shajisoft_wp$2 last;
-        }
-        
-        location ~* \.php$ {
-            try_files $uri =404;
-            fastcgi_intercept_errors on;
-            # With php5-fpm:
-            fastcgi_pass unix:/var/run/php-fpm.sock;
-            fastcgi_index index.php;
-            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-            include fastcgi_params;
-        }
+        rewrite ^ https://$server_name$request_uri permanent;
     }
 
-    location = /shajisoft_wp {
-        root /usr/local/nginx/html/;
-        try_files $uri/ $uri/index.php =404;
+    location /.well-known/acme-challenge/ {
+        alias /home/wdong/acme/challenges/;
+        try_files $uri =404;
+    }
+    
+}
+
+
+server {
+    listen 443 ssl http2 default_server;
+    server_name shajisoft.com www.shajisoft.com;
+
+    #ssl on;
+    ssl_certificate /home/wdong/acme/chained.pem;
+    ssl_certificate_key /home/wdong/acme/domain.key;
+    ssl_session_timeout 1d;
+    ssl_session_cache shared:SSL:50m;
+    ssl_session_tickets off;
+    ssl_dhparam /home/wdong/acme/dhparam.pem;
+
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA;
+    ssl_prefer_server_ciphers on;
+
+    # HSTS (ngx_http_headers_module is required) (15768000 seconds = 6 months)
+    add_header Strict-Transport-Security max-age=15768000;
+
+    # OCSP Stapling ---
+    # fetch OCSP records from URL in ssl_certificate and cache them
+    ssl_stapling on;
+    ssl_stapling_verify on;
+
+    ## verify chain of trust of OCSP response using Root CA and Intermediate certs
+    ssl_trusted_certificate /home/wdong/acme/chained.pem;
+    
+    root /usr/local/nginx/html;
+    index index.php index.html index.htm;
+
+    location ~ ^(/shajisoft_wp/[^/]+/)?files/(.+) {
+        try_files /shajisoft_wp/wp-content/blogs.dir/$blogid/files/$2 /shajisoft_wp/wp-includes/ms-files.php?file=$2 ;
+        access_log off; log_not_found off; expires max;
+    }
+ 
+    #avoid php readfile()
+    location ^~ /blogs.dir {
+        internal;
+        alias /usr/local/nginx/html/shajisoft_wp/wp-content/blogs.dir ;
+        access_log off; log_not_found off; expires max;
+    }
+ 
+    if (!-e $request_filename) {
+        rewrite ^/shajisoft_wp/([_0-9a-zA-Z-]+/)?wp-admin$ /shajisoft_wp/$1wp-admin/ permanent;
+        rewrite ^/shajisoft_wp/[_0-9a-zA-Z-]+/(wp-(content|admin|includes).*) /shajisoft_wp/$1 last;
+        rewrite ^/shajisoft_wp/[_0-9a-zA-Z-]+/(.*\.php)?$ /shajisoft_wp/$1 last;
+        rewrite /shajisoft_wp/.* /shajisoft_wp/index.php last;
     }
 
-    location ^~ /download/ {
+    location = / {
+        #try_files $uri $uri/ =404 ;
+        rewrite "^$" /shajisoft_wp;
+        return 301 http://shajisoft.com/shajisoft_wp;
+
+    }
+    
+    location /shajisoft_wp {
+        try_files $uri $uri/ /shajisoft_wp/index.php?$args ;
+    }
+    
+    location ~ \.php$ {
+        #try_files $uri =404;
+        #fastcgi_intercept_errors on;
+        # With php5-fpm:
+        #fastcgi_pass unix:/var/run/php-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        
+        fastcgi_buffer_size 128k;
+        fastcgi_buffers 256 16k;
+        fastcgi_busy_buffers_size 256k;
+        fastcgi_temp_file_write_size 256k;            
+        #include fastcgi_params;
+        include fastcgi.conf;
+        fastcgi_intercept_errors on;
+        fastcgi_pass php;
+        #fastcgi_split_path_info ^(/shajisoft_wp)(/.*)$;
+    }
+
+    location = /favicon.ico {
+        log_not_found off;
+        access_log off;
+    }
+
+    location = /robots.txt {
+        allow all;
+        log_not_found off;
+        access_log off;
+    }
+    
+    location ~* \.(jpg|jpeg|gif|png|css|js|ico|xml|woff)$ {
+        access_log        off;
+        log_not_found     off;
+        expires           max;
+    }    
+
+    location ^~ /download {
+        try_files $uri $uri/ =404;
         alias /usr/local/nginx/html/download/;
         autoindex on;
     }
@@ -51,21 +145,13 @@ server {
             fastcgi_pass unix:/var/run/php-fpm.sock;
             fastcgi_index index.php;
             fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-            include fastcgi_params;
+            #include fastcgi_params;
+            include fastcgi.conf;
         }
     }
     
     location = /test {
         root /usr/local/nginx/html/;
         try_files $uri/ $uri/index.html =404;
-    }
-        
-    location ~* \.php$ {
-        fastcgi_split_path_info ^(.+\.php)(/.+)$;
-        # With php5-fpm:
-        fastcgi_pass unix:/var/run/php-fpm.sock;
-        fastcgi_index index.php;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        include fastcgi_params;
     }
 }
