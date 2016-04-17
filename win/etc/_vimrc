@@ -9,6 +9,8 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
+" set the PATH env to include tools like git
+let $PATH .= ';e:/tools/git/bin'
 " set the runtime path to include Vundle and initialize
 set rtp+=~/vimfiles/bundle/Vundle.vim/
 let path='~/vimfiles/bundle'
@@ -23,8 +25,8 @@ Plugin 'gmarik/Vundle.vim'
 if (has('python') || has('python3'))
   Plugin 'SirVer/ultisnips'
   Plugin 'honza/vim-snippets'
-
   Plugin 'bling/vim-airline'
+  Plugin 'Valloric/YouCompleteMe'
 endif
 
 " Solarized color 
@@ -137,6 +139,22 @@ set noautoindent
 set smartindent
 let b:fortran_do_enddo=1
 
+" File type related special settings
+" settings for Python conformming to PEP8 standard
+au BufNewFile,BufRead *.py
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set textwidth=79 |
+    \ set expandtab |
+    \ set autoindent 
+
+" JS, html, css
+au BufNewFile,BufRead *.js, *.html, *.css
+    \ set tabstop=2 |
+    \ set softtabstop=2 |
+    \ set shiftwidth=2 
+
 " maximize window when using split structure
 map <C-J> <C-W>j<C-W>_
 map <C-K> <C-W>k<C-W>_
@@ -156,6 +174,18 @@ set backspace=indent,eol,start
 " Settings for Python Snippets
 let g:ultisnips_python_style="doxygen"
 let g:ultisnips_python_quoting_style="single"
+
+" Setting for YouCompleteMe not to use Tab key, otherwise, conflicting with
+" ultisnipts
+let g:ycm_key_list_select_completion=[]
+let g:ycm_key_list_previous_completion=[]
+let g:ycm_global_ycm_extra_conf = 'c:/users/dongw/vimfiles/_ycm_extra_conf.py'
+
+" Enable folding
+set foldmethod=indent
+set foldlevel=99
+" Enable folding with spacebar
+nnoremap <space> za
 
 " select case-insenitiv search (not default)
 " set ignorecase
