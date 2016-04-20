@@ -34,6 +34,7 @@ if (has('python') || has('python3')) && s:python_ver >= 260
 endif
 
 Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 
 " Solarized color 
 Plugin 'altercation/vim-colors-solarized' 
@@ -55,10 +56,10 @@ Plugin 'taglist.vim'
 Plugin 'craigemery/vim-autotag'
 
 " YouCompleteMe - requires vim 7.3.584+
-"Plugin 'Valloric/YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe'
 
 " OmniCppComplete
-Plugin 'OmniCppComplete'
+"Plugin 'OmniCppComplete'
 
 " jedi-vim for a better Python autocompletion
 Plugin 'davidhalter/jedi-vim'
@@ -103,13 +104,13 @@ filetype plugin indent on    " required
 
 
 " colorscheme evening
-set background=dark
 " colorscheme evening
 " colorscheme desert
 " colorscheme marklar
 set t_Co=16
 let g:solarized_termcolors=16
 colorscheme solarized
+set background=dark
 
 " Powerline related
 set laststatus=2 " Always display the statusline in all windows
@@ -139,31 +140,6 @@ set tags+=/vega/xp/dev/wdong/tags/qt4.tags
 set tags+=/vega/xp/dev/wdong/tags/vega.tags
 set tags+=/vega/xp/dev/wdong/tags/python.tags
 
-" OmniCppComplete
-let OmniCpp_NamespaceSearch = 1
-let OmniCpp_GlobalScopeSearch = 1
-let OmniCpp_ShowAccess = 1
-let OmniCpp_ShowPrototypeInAbbr = 1 " show function parameters
-let OmniCpp_MayCompleteDot = 1 " autocomplete after .
-let OmniCpp_MayCompleteArrow = 1 " autocomplete after ->
-let OmniCpp_MayCompleteScope = 1 " autocomplete after ::
-let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD", "vUtl"]
-" automatically open and close the popup menu / preview window
-au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
-"set completeopt=menuone,menu,longest,preview
-set completeopt=longest,menuone
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
-  \ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
-
-inoremap <expr> <M-,> pumvisible() ? '<C-n>' :
-  \ '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
-" open omni completion menu closing previous if open and opening new menu without changing the text
-inoremap <expr> <C-Space> (pumvisible() ? (col('.') > 1 ? '<Esc>i<Right>' : '<Esc>i') : '') .
-            \ '<C-x><C-o><C-r>=pumvisible() ? "\<lt>C-n>\<lt>C-p>\<lt>Down>" : ""<CR>'
-" open user completion menu closing previous if open and opening new menu without changing the text
-inoremap <expr> <S-Space> (pumvisible() ? (col('.') > 1 ? '<Esc>i<Right>' : '<Esc>i') : '') .
-            \ '<C-x><C-u><C-r>=pumvisible() ? "\<lt>C-n>\<lt>C-p>\<lt>Down>" : ""<CR>'
 
 " Buffer related
 :nnoremap <C-n> :bnext<CR>
@@ -179,6 +155,11 @@ set nowb
 set tabstop=4
 set shiftwidth=4
 
+
+"set softtabstop=4
+set expandtab
+" But for Makefiles, don't expand tab
+au BufNewFile,BufRead [mM]akefile setlocal noexpandtab
 " gnu open source style editing
 "set cinoptions=>2,n-2,{0,^-2,:2,=2,g0,h2,p5,t0,+2,(0,u0,w1,m1 shiftwidth=2 tabstop=8
 "set cinoptions=>2,n0,:2,=2,g0,h2,p2,t0,(0,u0,w1,m1 shiftwidth=2 tabstop=8
@@ -188,14 +169,25 @@ au Filetype python set tabstop=4| set shiftwidth=4
 au Filetype fortran set tabstop=3| set shiftwidth=3
 au BufEnter *.py set sw=4 ts=4
 
-"set softtabstop=4
-set expandtab
-" But for Makefiles, don't expand tab
-au BufNewFile,BufRead [mM]akefile setlocal noexpandtab
-
 " automatically indent lines (default)
 set noautoindent
 set smartindent
+
+" Python configuration conforming to PEP8 standards
+au BufNewFile,BufRead *.py
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set textwidth=79 |
+    \ set expandtab |
+    \ set autoindent |
+    \set fileformat=unix
+
+" Web development
+au BufNewFile,BufRead *.js,*.html,*.css
+    \ set tabstop=2 |
+    \ set softtabstop=2 |
+    \ set  shiftwidth=2
 
 " Fortran related settings
 let s:extfname = expand("%:e")
@@ -214,6 +206,13 @@ let fortran_fold=1
 " enable syntax highlighting
 syntax on
 
+" Enable folding
+set foldmethod=indent
+set foldlevel=99
+" Enable folding with the spacebar
+nnoremap <space> za
+
+
 " maximize window when using split structure
 map <C-J> <C-W>j<C-W>_
 map <C-K> <C-W>k<C-W>_
@@ -228,9 +227,20 @@ set pastetoggle=<F11>
 inoremap  
 set backspace=indent,eol,start
 
-" Settings for Python Snippets
+" Settings for Python Snippets. Use ctrl-tab instead of tab. The latter
+" conflicts with YouCompleteMe
 let g:ultisnips_python_style="doxygen"
 let g:ultisnips_python_quoting_style="single"
+"let g:UltiSnipsExpandTrigger="<c-tab>"
+"let g:UltiSnipsListSnippets="<c-s-tab>"
+
+" disable tab key for YouCompleteMe. Otherwise, it conflicts with ultisnips
+let g:ycm_key_list_select_completion=[]
+let g:ycm_key_list_previous_completion=[]
+" Other handy settings for YouCompleteMe
+let g:ycm_autoclose_preview_window_after_completion=1
+map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+let g:ycm_key_list_previous_completion=['<Up>']
 
 " select case-insenitiv search (not default)
 " set ignorecase

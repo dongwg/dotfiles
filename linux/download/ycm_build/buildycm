@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cmake -G "Unix Makefiles" -DPATH_TO_LLVM_ROOT="./clang+llvm-3.8.0-x86_64-linux-gnu-debian8" . ~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp
+
+
