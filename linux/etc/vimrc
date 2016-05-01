@@ -239,8 +239,10 @@ let g:ycm_key_list_select_completion=[]
 let g:ycm_key_list_previous_completion=[]
 " Other handy settings for YouCompleteMe
 let g:ycm_autoclose_preview_window_after_completion=1
-map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
-let g:ycm_key_list_previous_completion=['<Up>']
+"map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+let g:ycm_max_diagnostics_to_display = 1000
+" Goto definition with F12
+map <F12> :YcmCompleter GoTo<CR>
 
 " select case-insenitiv search (not default)
 " set ignorecase
