@@ -180,6 +180,9 @@ let g:ultisnips_python_quoting_style="single"
 let g:ycm_key_list_select_completion=[]
 let g:ycm_key_list_previous_completion=[]
 let g:ycm_global_ycm_extra_conf = 'c:/users/dongw/vimfiles/_ycm_extra_conf.py'
+let g:ycm_max_diagnostics_to_display = 1000
+" Goto definition with F12
+map <F12> :YcmCompleter GoTo<CR>
 
 " Enable folding
 set foldmethod=indent
