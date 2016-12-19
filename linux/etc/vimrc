@@ -112,23 +112,38 @@ filetype plugin indent on    " required
 " colorscheme evening
 " colorscheme desert
 " colorscheme marklar
-set t_Co=16
-let g:solarized_termcolors=16
+let g:solarized_bold=0
+let g:solarized_contrast = "low"
+if $TERM == "xterm-256color"
+  set t_Co=256
+  let g:solarized_tercolors=256
+else
+  set t_Co=16
+  let g:solarized_termcolors=16
+endif
+
 colorscheme solarized
-set background=dark
+if has('gui_running')
+  set background=light
+else
+  set background=dark
+endif
 
 " Powerline related
 set laststatus=2 " Always display the statusline in all windows
 set showtabline=2 " Always display the tabline, even if there is only one tab
 set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
 
+"set guifont=Liberation\ Mono\ for\ Powerline\ 10
 " airline related
-let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#enabled=1
 let g:airline_theme             = 'powerlineish'
-if has ('win32unix') && !has('gui_running')
+if !has('gui_running')
     let g:airline_powerline_fonts = 1
 endif
 set laststatus=2
+
+
 
 " taglist related
 map <F3> :silent! Tlist<CR> 
@@ -261,6 +276,10 @@ set incsearch
 
 " show cursor line and column in the status line
 set ruler
+"set cursorline
+"set cursorcolumn
+"hi CursorLine cterm=NONE ctermbg=237 ctermfg=NONE guibg=darkred guifg=white
+"hi CursorColumn cterm=NONE ctermbg=235 ctermfg=NONE guibg=darkred guifg=white
 
 " show matching brackets
 set showmatch
