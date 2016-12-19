@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <key name="Software">
 	<key name="ConEmu">
-		<key name=".Vanilla" modified="2016-04-17 11:52:51" build="160416">
+		<key name=".Vanilla" modified="2016-12-19 14:43:50" build="161206">
 			<value name="StartType" type="hex" data="02"/>
 			<value name="CmdLine" type="string" data=""/>
 			<value name="StartTasksFile" type="string" data=""/>
@@ -59,7 +59,7 @@
 			<value name="FontSize" type="ulong" data="14"/>
 			<value name="StatusFontHeight" type="long" data="12"/>
 			<value name="TabFontHeight" type="long" data="13"/>
-			<key name="HotKeys" modified="2016-04-17 10:39:55" build="160416">
+			<key name="HotKeys" modified="2016-12-09 16:19:41" build="161206">
 				<value name="MinimizeRestore" type="dword" data="000011c0"/>
 				<value name="KeyMacroVersion" type="hex" data="02"/>
 				<value name="Multi.Modifier" type="dword" data="0000005b"/>
@@ -249,8 +249,8 @@
 			<value name="Cascaded" type="hex" data="01"/>
 			<value name="IntegralSize" type="hex" data="00"/>
 			<value name="WindowMode" type="dword" data="0000051f"/>
-			<value name="ConWnd X" type="long" data="23"/>
-			<value name="ConWnd Y" type="long" data="172"/>
+			<value name="ConWnd X" type="long" data="4"/>
+			<value name="ConWnd Y" type="long" data="247"/>
 			<value name="LastMonitor" type="string" data="0,0,1920,1040"/>
 			<value name="ConWnd Width" type="dword" data="00000080"/>
 			<value name="ConWnd Height" type="dword" data="00000028"/>
@@ -299,11 +299,13 @@
 			<value name="SaveCmdHistory" type="hex" data="01"/>
 			<value name="CmdLineHistory" type="multi">
 				<line data="{Bash::Git bash}"/>
-				<line data="{Bash::MinGW bash}"/>
-				<line data="{SSH::debianjessie}"/>
-				<line data="{SSH::ds213+}"/>
-				<line data="{SSH::ls-chlffe}"/>
 				<line data="{SSH::taohe.vps}"/>
+				<line data="{SSH::debianstretch}"/>
+				<line data="{SSH::ls-chlffe}"/>
+				<line data="{SSH::ds213+}"/>
+				<line data="{SSH::debianjessie}"/>
+				<line data="{Shells::cmd (Admin)}"/>
+				<line data="{Bash::MinGW bash}"/>
 				<line data="{Bash::Msys2-64}"/>
 			</value>
 			<value name="ShowHelpTooltips" type="hex" data="01"/>
@@ -577,9 +579,9 @@
 			<value name="Update.DownloadPath" type="string" data="%TEMP%\ConEmu"/>
 			<value name="Update.LeavePackages" type="hex" data="00"/>
 			<value name="Update.PostUpdateCmd" type="string" data="echo Last successful update&gt;ConEmuUpdate.info &amp;&amp; date /t&gt;&gt;ConEmuUpdate.info &amp;&amp; time /t&gt;&gt;ConEmuUpdate.info"/>
-			<key name="Tasks" modified="2016-04-17 10:39:55" build="160416">
-				<value name="Count" type="long" data="15"/>
-				<key name="Task1" modified="2016-04-17 10:39:55" build="160416">
+			<key name="Tasks" modified="2016-12-09 16:19:41" build="161206">
+				<value name="Count" type="long" data="16"/>
+				<key name="Task1" modified="2016-12-09 16:19:41" build="161206">
 					<value name="Name" type="string" data="{Shells::cmd}"/>
 					<value name="Flags" type="dword" data="00000002"/>
 					<value name="Hotkey" type="dword" data="00000000"/>
@@ -588,7 +590,7 @@
 					<value name="Active" type="long" data="0"/>
 					<value name="Count" type="long" data="1"/>
 				</key>
-				<key name="Task2" modified="2016-04-17 10:39:55" build="160416">
+				<key name="Task2" modified="2016-12-09 16:19:41" build="161206">
 					<value name="Name" type="string" data="{Shells::cmd (Admin)}"/>
 					<value name="Flags" type="dword" data="00000000"/>
 					<value name="Hotkey" type="dword" data="00000000"/>
@@ -597,7 +599,7 @@
 					<value name="Active" type="long" data="0"/>
 					<value name="Count" type="long" data="1"/>
 				</key>
-				<key name="Task3" modified="2016-04-17 10:39:55" build="160416">
+				<key name="Task3" modified="2016-12-09 16:19:41" build="161206">
 					<value name="Name" type="string" data="{Shells::cmd-32}"/>
 					<value name="Flags" type="dword" data="00000000"/>
 					<value name="Hotkey" type="dword" data="00000000"/>
@@ -606,7 +608,7 @@
 					<value name="Active" type="long" data="0"/>
 					<value name="Count" type="long" data="1"/>
 				</key>
-				<key name="Task4" modified="2016-04-17 10:39:55" build="160416">
+				<key name="Task4" modified="2016-12-09 16:19:41" build="161206">
 					<value name="Name" type="string" data="{Shells::cmd 64/32}"/>
 					<value name="Flags" type="dword" data="00000000"/>
 					<value name="Hotkey" type="dword" data="00000000"/>
@@ -616,7 +618,7 @@
 					<value name="Active" type="long" data="1"/>
 					<value name="Count" type="long" data="2"/>
 				</key>
-				<key name="Task5" modified="2016-04-17 10:39:55" build="160416">
+				<key name="Task5" modified="2016-12-09 16:19:41" build="161206">
 					<value name="Name" type="string" data="{Shells::PowerShell}"/>
 					<value name="Flags" type="dword" data="00000000"/>
 					<value name="Hotkey" type="dword" data="00000000"/>
@@ -625,7 +627,7 @@
 					<value name="Active" type="long" data="0"/>
 					<value name="Count" type="long" data="1"/>
 				</key>
-				<key name="Task6" modified="2016-04-17 10:39:55" build="160416">
+				<key name="Task6" modified="2016-12-09 16:19:41" build="161206">
 					<value name="Name" type="string" data="{Shells::PowerShell (Admin)}"/>
 					<value name="Flags" type="dword" data="00000000"/>
 					<value name="Hotkey" type="dword" data="00000000"/>
@@ -634,7 +636,7 @@
 					<value name="Active" type="long" data="0"/>
 					<value name="Count" type="long" data="1"/>
 				</key>
-				<key name="Task7" modified="2016-04-17 10:39:55" build="160416">
+				<key name="Task7" modified="2016-12-09 16:19:41" build="161206">
 					<value name="Name" type="string" data="{Bash::Git bash}"/>
 					<value name="Flags" type="dword" data="00000000"/>
 					<value name="Hotkey" type="dword" data="00000000"/>
@@ -643,7 +645,7 @@
 					<value name="Active" type="long" data="0"/>
 					<value name="Count" type="long" data="1"/>
 				</key>
-				<key name="Task8" modified="2016-04-17 10:39:55" build="160416">
+				<key name="Task8" modified="2016-12-09 16:19:41" build="161206">
 					<value name="Name" type="string" data="{Bash::MinGW bash}"/>
 					<value name="Flags" type="dword" data="00000000"/>
 					<value name="Hotkey" type="dword" data="00000000"/>
@@ -652,7 +654,7 @@
 					<value name="Active" type="long" data="0"/>
 					<value name="Count" type="long" data="1"/>
 				</key>
-				<key name="Task9" modified="2016-04-17 10:39:55" build="160416">
+				<key name="Task9" modified="2016-12-09 16:19:41" build="161206">
 					<value name="Name" type="string" data="{Bash::Msys2-64}"/>
 					<value name="Flags" type="dword" data="00000000"/>
 					<value name="Hotkey" type="dword" data="00000000"/>
@@ -661,7 +663,7 @@
 					<value name="Active" type="long" data="0"/>
 					<value name="Count" type="long" data="1"/>
 				</key>
-				<key name="Task10" modified="2016-04-17 10:39:55" build="160416">
+				<key name="Task10" modified="2016-12-09 16:19:41" build="161206">
 					<value name="Name" type="string" data="{Tests::Show ANSI colors}"/>
 					<value name="Flags" type="dword" data="00000000"/>
 					<value name="Hotkey" type="dword" data="00000000"/>
@@ -670,7 +672,7 @@
 					<value name="Active" type="long" data="0"/>
 					<value name="Count" type="long" data="1"/>
 				</key>
-				<key name="Task11" modified="2016-04-17 10:39:55" build="160416">
+				<key name="Task11" modified="2016-12-09 16:19:41" build="161206">
 					<value name="Name" type="string" data="{Scripts::Chocolatey (Admin)}"/>
 					<value name="Flags" type="dword" data="00000000"/>
 					<value name="Hotkey" type="dword" data="00000000"/>
@@ -679,7 +681,7 @@
 					<value name="Active" type="long" data="0"/>
 					<value name="Count" type="long" data="1"/>
 				</key>
-				<key name="Task12" modified="2016-04-17 10:39:55" build="160416">
+				<key name="Task12" modified="2016-12-09 16:19:41" build="161206">
 					<value name="Name" type="string" data="{SSH::ls-chlffe}"/>
 					<value name="Flags" type="dword" data="00000000"/>
 					<value name="Hotkey" type="dword" data="00000000"/>
@@ -688,7 +690,7 @@
 					<value name="Active" type="long" data="0"/>
 					<value name="Count" type="long" data="1"/>
 				</key>
-				<key name="Task13" modified="2016-04-17 10:39:55" build="160416">
+				<key name="Task13" modified="2016-12-09 16:19:41" build="161206">
 					<value name="Name" type="string" data="{SSH::ds213+}"/>
 					<value name="Flags" type="dword" data="00000000"/>
 					<value name="Hotkey" type="dword" data="00000000"/>
@@ -697,7 +699,7 @@
 					<value name="Active" type="long" data="0"/>
 					<value name="Count" type="long" data="1"/>
 				</key>
-				<key name="Task14" modified="2016-04-17 10:39:55" build="160416">
+				<key name="Task14" modified="2016-12-09 16:19:41" build="161206">
 					<value name="Name" type="string" data="{SSH::taohe.vps}"/>
 					<value name="Flags" type="dword" data="00000000"/>
 					<value name="Hotkey" type="dword" data="00000000"/>
@@ -706,7 +708,7 @@
 					<value name="Active" type="long" data="0"/>
 					<value name="Count" type="long" data="1"/>
 				</key>
-				<key name="Task15" modified="2016-04-17 10:39:55" build="160416">
+				<key name="Task15" modified="2016-12-09 16:19:41" build="161206">
 					<value name="Name" type="string" data="{SSH::debianjessie}"/>
 					<value name="Flags" type="dword" data="00000000"/>
 					<value name="Hotkey" type="dword" data="00000000"/>
@@ -715,11 +717,20 @@
 					<value name="Active" type="long" data="0"/>
 					<value name="Count" type="long" data="1"/>
 				</key>
+				<key name="Task16" modified="2016-12-09 16:20:50" build="161206">
+					<value name="Name" type="string" data="{SSH::debianstretch}"/>
+					<value name="Flags" type="dword" data="00000000"/>
+					<value name="Hotkey" type="dword" data="00000000"/>
+					<value name="GuiArgs" type="string" data=""/>
+					<value name="Cmd1" type="string" data="%ConEmuDrive%\Tools\putty\putty.exe -new_console -load debianstretch&quot;"/>
+					<value name="Active" type="long" data="0"/>
+					<value name="Count" type="long" data="1"/>
+				</key>
 			</key>
-			<key name="Apps" modified="2016-04-17 10:39:55" build="160416">
+			<key name="Apps" modified="2016-12-09 16:20:50" build="161206">
 				<value name="Count" type="long" data="0"/>
 			</key>
-			<key name="Colors" modified="2016-04-17 10:39:55" build="160416">
+			<key name="Colors" modified="2016-12-09 16:20:50" build="161206">
 				<value name="Count" type="long" data="0"/>
 			</key>
 			<value name="CTS.ResetOnRelease" type="hex" data="00"/>
@@ -728,6 +739,17 @@
 			<value name="DebugLog" type="hex" data="00"/>
 			<value name="StatusBar.Hide.TMode" type="hex" data="01"/>
 			<value name="StatusBar.Hide.RMode" type="hex" data="01"/>
+			<value name="VividColors" type="hex" data="01"/>
+			<value name="AnsiExecution" type="hex" data="01"/>
+			<value name="AnsiAllowedCommands" type="multi">
+				<line data="cmd -cur_console:R /cGitShowBranch.cmd"/>
+			</value>
+			<value name="KillSshAgent" type="hex" data="01"/>
+			<value name="JumpListAutoUpdate" type="hex" data="01"/>
+			<value name="CompressLongStrings" type="hex" data="01"/>
+			<value name="UseAltGrayPlus" type="hex" data="01"/>
+			<value name="MouseDragWindow" type="hex" data="01"/>
+			<value name="StatusBar.Hide.CellI" type="hex" data="01"/>
 		</key>
 	</key>
 </key>
