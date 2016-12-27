@@ -3,7 +3,7 @@ Description=uWSGI Emperor
 After=syslog.target
 
 [Service]
-ExecStart=/home/taohe/DevUtils/src_repos/uwsgi/uwsgi --ini /etc/uwsgi/emperor.ini
+ExecStart=/home/taohe/DevUtils/git-repos/uwsgi/uwsgi --ini /etc/uwsgi/emperor.ini
 #ExecStart=/home/taohe/DevUtils/src_repos/uwsgi/uwsgi --emperor /etc/uwsgi/sites
 #Requires systemd version 211 or newer
 RuntimeDirectory=uwsgi
