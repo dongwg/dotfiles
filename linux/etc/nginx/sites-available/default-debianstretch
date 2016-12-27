@@ -1,0 +1,170 @@
+upstream php {
+    server unix:/var/run/php-fpm.sock;
+    #server 127.0.0.1:9000;
+}
+
+upstream python {
+    server unix:/var/run/python_test.sock;
+}
+
+map $uri $blogname{
+    ~^(?P<blogpath>/[^/]+/)files/(.*)   $blogpath ;
+}
+
+map $blogname $blogid{
+    default -999;
+     
+    #Ref: http://wordpress.org/extend/plugins/nginx-helper/
+    #include /var/www/wordpress/wp-content/plugins/nginx-helper/map.conf ;
+    #include /usr/local/nginx/html/shajisoft_wp/wp-content/uploads/nginx-helper/map.conf;
+}
+
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server ipv6only=on;
+
+    #server_name shajisoft.com www.shajisoft.com;
+    server_name localhost;
+    
+    root /usr/local/nginx/html;
+    index index.php index.html index.htm;
+
+    location ~ ^(/shajisoft_wp/[^/]+/)?files/(.+) {
+        try_files /shajisoft_wp/wp-content/blogs.dir/$blogid/files/$2 /shajisoft_wp/wp-includes/ms-files.php?file=$2 ;
+        access_log off; log_not_found off; expires max;
+    }
+ 
+    #avoid php readfile()
+    location ^~ /blogs.dir {
+        internal;
+        alias /usr/local/nginx/html/shajisoft_wp/wp-content/blogs.dir ;
+        access_log off; log_not_found off; expires max;
+    }
+ 
+    if (!-e $request_filename) {
+        rewrite ^/shajisoft_wp/([_0-9a-zA-Z-]+/)?wp-admin$ /shajisoft_wp/$1wp-admin/ permanent;
+        rewrite ^/shajisoft_wp/[_0-9a-zA-Z-]+/(wp-(content|admin|includes).*) /shajisoft_wp/$1 last;
+        rewrite ^/shajisoft_wp/[_0-9a-zA-Z-]+/(.*\.php)?$ /shajisoft_wp/$1 last;
+        rewrite /shajisoft_wp/.* /shajisoft_wp/index.php last;
+    }
+
+    location = / {
+        #try_files $uri $uri/ =404 ;
+        rewrite "^$" /shajisoft_wp;
+        return 301 http://debianjessie/shajisoft_wp;
+
+    }
+    
+    location /shajisoft_wp {
+        try_files $uri $uri/ /shajisoft_wp/index.php?$args ;
+    }
+    
+    location ~ \.php$ {
+        #try_files $uri =404;
+        #fastcgi_intercept_errors on;
+        # With php5-fpm:
+        #fastcgi_pass unix:/var/run/php-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        
+        fastcgi_buffer_size 128k;
+        fastcgi_buffers 256 16k;
+        fastcgi_busy_buffers_size 256k;
+        fastcgi_temp_file_write_size 256k;
+	fastcgi_read_timeout 240;
+        #include fastcgi_params;
+        include fastcgi.conf;
+        fastcgi_intercept_errors on;
+        fastcgi_pass php;
+        #fastcgi_split_path_info ^(/shajisoft_wp)(/.*)$;
+    }
+
+    location = /favicon.ico {
+        log_not_found off;
+        access_log off;
+    }
+
+    location = /robots.txt {
+        allow all;
+        log_not_found off;
+        access_log off;
+    }
+    
+    location ~* \.(jpg|jpeg|gif|png|css|js|ico|xml|woff)$ {
+        access_log        off;
+        log_not_found     off;
+        expires           max;
+    }    
+
+    location ^~ /download {
+        try_files $uri $uri/ =404;
+        alias /usr/local/nginx/html/download/;
+        autoindex on;
+    }
+
+    location ^~ /test/ {
+        root /usr/local/nginx/html/;
+        location ~* \.php$ {
+            fastcgi_split_path_info ^(.+\.php)(/.+)$;
+            try_files $uri =404;
+            # With php5-fpm:
+            fastcgi_pass unix:/var/run/php-fpm.sock;
+            fastcgi_index index.php;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            #include fastcgi_params;
+            include fastcgi.conf;
+        }
+    }
+    
+    location = /test {
+        root /usr/local/nginx/html/;
+        try_files $uri/ $uri/index.html =404;
+    }
+    
+    location ^~ /test-py/ {
+		include uwsgi_params;
+		uwsgi_pass python;
+
+    }
+    
+    location = /test-py {
+        root /usr/local/nginx/html/;
+        try_files $uri/ $uri/index.html =404;
+    }
+    
+    location = /flask_tst01 { rewrite ^ /flask_tst01/; }
+    location /flask_tst01 { 
+    	#root /usr/local/nginx/html/flask_tst01;
+	try_files $uri/ =404; 
+    }
+    location ^~ /flask_tst01/ {
+        include uwsgi_params;
+        #uwsgi_param SCRIPT_NAME /flask_tst01;
+        uwsgi_modifier1 30;
+        uwsgi_pass unix:/var/run/flask_tst01.sock;
+    }
+    
+    #location = /django_tst01 { rewrite ^ /django_tst01/; }
+    location /django_tst01 { 
+    	root /usr/local/nginx/html/django_tst01;
+	#try_files $uri/ =404; 
+        include uwsgi_params;
+        #uwsgi_param SCRIPT_NAME /django_tst01;
+        uwsgi_modifier1 30;
+        uwsgi_pass unix:/var/run/django_tst01.sock;
+    }
+    #location ^~ /django_tst01/ {
+    #}
+    location ^~ /tut01 { 
+    	#root /usr/local/nginx/html/django_tut01;
+	#try_files $uri/ =404; 
+        include uwsgi_params;
+        #uwsgi_modifier1 30;
+        uwsgi_pass unix:/var/run/django_tut01.sock;
+    }
+    location ^~ /tut01/static {
+        alias /home/taohe/Documents/django_prjs/tut01/mysite/static;
+    }
+
+
+}
