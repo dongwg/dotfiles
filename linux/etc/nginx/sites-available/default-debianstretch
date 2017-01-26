@@ -144,17 +144,13 @@ server {
         uwsgi_pass unix:/var/run/flask_tst01.sock;
     }
     
-    #location = /django_tst01 { rewrite ^ /django_tst01/; }
-    location /django_tst01 { 
-    	root /usr/local/nginx/html/django_tst01;
-	#try_files $uri/ =404; 
+    location ^~ /django-tut01 { 
         include uwsgi_params;
-        #uwsgi_param SCRIPT_NAME /django_tst01;
-        uwsgi_modifier1 30;
-        uwsgi_pass unix:/var/run/django_tst01.sock;
+        uwsgi_pass unix:/var/run/django-tut01.sock;
     }
-    #location ^~ /django_tst01/ {
-    #}
+    location ^~ /django-tut01/static {
+        alias /home/taohe/Documents/dev/django/django-tut01/src/static;
+    }
     location ^~ /tut01 { 
     	#root /usr/local/nginx/html/django_tut01;
 	#try_files $uri/ =404; 
