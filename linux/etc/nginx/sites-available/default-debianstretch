@@ -148,9 +148,20 @@ server {
         include uwsgi_params;
         uwsgi_pass unix:/var/run/django-tut01.sock;
     }
+
     location ^~ /django-tut01/static {
         alias /home/taohe/Documents/dev/django/django-tut01/src/mysite/static;
     }
+
+    location ^~ /taskbuster { 
+        include uwsgi_params;
+        uwsgi_pass unix:/var/run/taskbuster.sock;
+    }
+
+    location ^~ /taskbuster/static {
+        alias /home/taohe/Documents/dev/django/taskbuster/src/taskbuster/static;
+    }
+
     location ^~ /tut01 { 
     	#root /usr/local/nginx/html/django_tut01;
 	#try_files $uri/ =404; 
