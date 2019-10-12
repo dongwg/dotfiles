@@ -1,0 +1,14 @@
+snippet class "class" b
+class ${1:Class}
+{
+public:
+	// Constructors, assignment, destructor
+	$1();
+	$1(const $1& rhs);
+	$1& operator=(const $1& rhs);
+	~$1();
+	$2
+private:
+	$3
+};
+endsnippet
