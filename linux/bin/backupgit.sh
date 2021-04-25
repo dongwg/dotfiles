@@ -26,9 +26,9 @@ pushd $projects_dir
 git_status=0
 
 echo "[Create git bundles]" >> ${log_file}
-###for d in `find $projects_dir -type d -name \*.git`; do 
+for d in `find $projects_dir -type d -name \*.git`; do 
 ###Exclude Calibre
-for d in `find $projects_dir -type d -name \*.git -not -path "*ebooks*"`; do 
+###for d in `find $projects_dir -type d -name \*.git -not -path "*ebooks*"`; do 
 	cd $d 
 	repo=${d##*/}
 	repo=${repo%.*}_${today} 
