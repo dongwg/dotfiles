@@ -2,7 +2,7 @@
 
 PATH=/opt/bin:/opt/sbin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 
-projects_dir=/s0/repos
+projects_dir=/s0/share/repos
 backup_base_dir=/mnt/ds213/repos/backup 
 
 # For some reason, the file system wouldn't be monted after the linkstation is rebooted
