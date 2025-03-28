@@ -26,9 +26,9 @@ pushd $projects_dir
 git_status=0
 
 echo "[Create git bundles]" >> ${log_file}
-for d in `find $projects_dir -type d -name \*.git`; do 
+#for d in `find $projects_dir -type d -name \*.git`; do 
 ###Exclude Calibre
-###for d in `find $projects_dir -type d -name \*.git -not -path "*ebooks*"`; do 
+for d in `find $projects_dir -type d -name \*.git -not -path "*ebooks*"`; do 
 	cd $d 
 	repo=${d##*/}
 	repo=${repo%.*}_${today} 
@@ -54,9 +54,9 @@ popd
 # Remove the old backups (only keep two days backup)
 if [ ${git_status} -eq 0 ]; then
 	echo " " >> ${log_file}
-	echo "[Remove bundles older than 2 days]" >> ${log_file}
-        find $backup_base_dir -name "*.bundle" -mtime +1 -exec echo "  rm -f {}" >> ${log_file} \;	
-	find $backup_base_dir -name "*.bundle" -mtime +1 -exec rm -f {} >> ${log_file} 2>&1 \;
+        echo "[Remove bundles older than 2 days (excluding CalibreLibrary)]" >> ${log_file}
+        find $backup_base_dir -name "*.bundle" -and ! -name "Calibre*" -mtime +1 -exec echo "  rm -f {}" >> ${log_file} \;	
+	find $backup_base_dir -name "*.bundle" -and ! -name "Calibre*" -mtime +1 -exec rm -f {} >> ${log_file} 2>&1 \;
 	
 	echo " " >> ${log_file}
 fi
