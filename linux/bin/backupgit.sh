@@ -71,4 +71,4 @@ fi
 # send the email using ssmtp
 #ssmtp dongwg@hotmail.com < ${mail_inp}
  
-#
+swaks --to dongwg@hotmail.com --from dongwg@hotmail.com -s dev-vm1.home:1587 -au dongwg@hotmail.com -ap Dummy1234 --header "Subject: ${HOSTNAME} Report: Backup of Git Repositories" --body ${log_file}
